@@ -2,6 +2,8 @@
 
 # ⌚ Timely-Vibe
 
+<img src="screenshot.png" width="200" alt="Timely-Vibe watchface">
+
 **A bold, readable watchface for the Pebble Time 2 — massive Anton time display, single-week calendar, weather, and health complications.**
 
 ![Version](https://img.shields.io/badge/version-3.3.0-blue)
