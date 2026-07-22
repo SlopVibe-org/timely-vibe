@@ -612,6 +612,62 @@ void update_clock2_text(TextLayer *which_layer) {
 
 // System-info slots: the connection and the two batteries can be shown in any
 // complication slot, so they share the same TextLayer renderer as the rest.
+// ---- Health service slots ----
+#include <pebble.h>
+
+static void update_steps_text(TextLayer *l) {
+  static char buf[16];
+  time_t start = time_start_of_today();
+  time_t end = time(NULL);
+  int steps = (int)health_service_sum_today(HealthMetricStepCount);
+  if (steps > 0) {
+    if (steps >= 1000) { snprintf(buf, sizeof(buf), "%dk", steps / 1000); }
+    else { snprintf(buf, sizeof(buf), "%d", steps); }
+  } else {
+    snprintf(buf, sizeof(buf), "--");
+  }
+  text_layer_set_text(l, buf);
+}
+
+static void update_hr_text(TextLayer *l) {
+  static char buf[16];
+  HealthValue hr = health_service_peek_current_value(HealthMetricHeartRateBPM);
+  if (hr > 0) { snprintf(buf, sizeof(buf), "%d", (int)hr); }
+  else { snprintf(buf, sizeof(buf), "--"); }
+  text_layer_set_text(l, buf);
+}
+
+static void update_distance_text(TextLayer *l) {
+  static char buf[16];
+  int dist = (int)health_service_sum_today(HealthMetricWalkedDistanceMeters);
+  if (dist > 0) {
+    if (dist >= 1000) { snprintf(buf, sizeof(buf), "%dkm", dist / 1000); }
+    else { snprintf(buf, sizeof(buf), "%dm", dist); }
+  } else { snprintf(buf, sizeof(buf), "--"); }
+  text_layer_set_text(l, buf);
+}
+
+static void update_calories_text(TextLayer *l) {
+  static char buf[16];
+  int cal = (int)health_service_sum_today(HealthMetricActiveKCalories);
+  int restcal = (int)health_service_sum_today(HealthMetricRestingKCalories);
+  int total = cal + restcal;
+  if (total > 0) { snprintf(buf, sizeof(buf), "%d", total); }
+  else { snprintf(buf, sizeof(buf), "--"); }
+  text_layer_set_text(l, buf);
+}
+
+static void update_sleep_text(TextLayer *l) {
+  static char buf[16];
+  int sleep = (int)health_service_sum_today(HealthMetricSleepSeconds);
+  if (sleep > 0) {
+    int h = sleep / 3600;
+    int m = (sleep % 3600) / 60;
+    snprintf(buf, sizeof(buf), "%dh%02d", h, m);
+  } else { snprintf(buf, sizeof(buf), "--"); }
+  text_layer_set_text(l, buf);
+}
+
 void update_wbatt_text(TextLayer *which_layer) {
   static char buf[16];
   snprintf(buf, sizeof(buf), "%d%%", battery_percent);
@@ -688,6 +744,11 @@ void update_slot_text(TextLayer *layer, uint8_t content) {
   case 16: update_pbatt_text(layer);     break; // Phone battery
   case 17: update_conn_text(layer);      break; // Bluetooth connection
   case 18: text_layer_set_text(layer, format_current_date()); break; // Date
+  case 19: update_steps_text(layer);     break; // Steps
+  case 20: update_hr_text(layer);        break; // Heart rate (BPM)
+  case 21: update_distance_text(layer);  break; // Distance
+  case 22: update_calories_text(layer);  break; // Calories
+  case 23: update_sleep_text(layer);     break; // Sleep
   default: break;                                // 0 = hidden
   }
 }
@@ -1676,6 +1737,7 @@ void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed)
   apply_palette();
   update_time_text();
   refresh_stat_slots(); // keep time-based status-bar slots current
+  apply_center(); // refresh above-time slots (health data changes)
   if ( currentTime->tm_min % 10 == 0) {
     dnd_period_check();
     hourvibe_period_check();

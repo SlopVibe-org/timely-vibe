@@ -16,7 +16,8 @@ var SLOTS = [
   ['Day of year', 6], ['Days left in year', 7], ['Day of year / left', 8],
   ['Seconds', 9], ['Location', 10], ['Sunrise', 11], ['Sunset', 12], ['Moon phase', 13],
   ['2nd time zone', 14],
-  ['Watch battery', 15], ['Phone battery', 16], ['Bluetooth', 17], ['Date', 18]
+  ['Watch battery', 15], ['Phone battery', 16], ['Bluetooth', 17], ['Date', 18],
+  ['Steps', 19], ['Heart rate', 20], ['Distance', 21], ['Calories', 22], ['Sleep', 23]
 ];
 SLOTS = [SLOTS[0]].concat(SLOTS.slice(1).sort(function (a, b) {
   return a[0] < b[0] ? -1 : (a[0] > b[0] ? 1 : 0);

@@ -1,105 +1,78 @@
 <div align="center">
 
-# ⌚ TimelyNG
+# ⌚ Timely-Vibe
 
-**A calendar watchface for Pebble — date, time & weather up top, a 3‑week
-calendar below, and fully configurable complication rows you arrange yourself.**
+**A bold, readable watchface for the Pebble Time 2 — massive Anton time display, single-week calendar, weather, and health complications.**
 
-[![CI](https://github.com/eldios/TimelyNG/actions/workflows/ci.yml/badge.svg)](https://github.com/eldios/TimelyNG/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-0.0.7-blue)
-![Platforms](https://img.shields.io/badge/Pebble-emery%20·%20flint%20·%20basalt%20·%20diorite-orange)
+![Version](https://img.shields.io/badge/version-3.3.0-blue)
+![Platforms](https://img.shields.io/badge/Pebble-emery%20(Time%202)-orange)
 ![Language](https://img.shields.io/badge/C-C99-555?logo=c)
 ![PebbleKit JS](https://img.shields.io/badge/config-PebbleKit%20JS-f5a623?logo=javascript&logoColor=white)
-![SDK](https://img.shields.io/badge/Pebble%20SDK-4.x%20(Core%20Devices)-black)
+
+[Rebble Store](https://apps.repebble.com/f62530e9f97649b093a50e9e)
 
 </div>
 
 ---
 
-## 🙏 Homage & inspiration
+## ✨ Overview
 
-TimelyNG is **freely inspired by, and an homage to, the original *Timely* /
-*PebbleTimely* watchface and its community forks** — in particular
-[Andrew129260/Timely‑2](https://github.com/Andrew129260/Timely-2) and
-[alan‑johnson/PebbleTimely](https://github.com/alan-johnson/PebbleTimely).
-It carries forward their ideas and spirit (the calendar‑centric layout, the
-localizable date/time, the complication slots), rebuilt for the modern
-**Core Devices Pebble SDK** and the new hardware. All credit for the original
-concept goes to those projects; any bugs here are mine.
+Timely-Vibe is a customized watchface based on [TimelyNG](https://github.com/eldios/TimelyNG), rebuilt for maximum readability on the Pebble Time 2 (Emery, 200×228px).
 
-## ✨ Why TimelyNG (what's different)
+### Key changes from TimelyNG:
+- **Ultra-bold Anton 96px time display** — the biggest, most readable time possible
+- **Single-week calendar** (instead of 3 weeks) — frees up screen space for the massive time
+- **Weather with icon + temperature** side-by-side, positioned above the time
+- **Above-time complications** share the same line as the weather
+- **Removed "Above calendar" row** — time sits directly above the calendar
+- **Today highlighted** with accent background + black text for contrast
+- **Optimized defaults** — Sunset, Watch battery, text battery %, D MMMM date format
 
-Compared to the classic Timely and its forks, TimelyNG adds:
+## 🧩 Complications
 
-- **Configurable complication *rows*, not fixed slots.** Three rows — status
-  bar, above the time, above the calendar — and each holds **one complication
-  (centred) or two (side by side)**.
-- **One unified, alphabetical menu for every slot**, including things that used
-  to be hard‑wired: **watch battery, phone battery, Bluetooth, and the date
-  itself** — put any of them anywhere.
-- **Adaptive layout that reflows live.** Empty a row and the freed space is
-  given back to the clock and calendar; the **clock font auto‑scales** to the
-  space available — and it all updates the moment you save the config, no
-  reload.
-- **Multiple battery styles:** a filling bar with the % *inside*, plain text,
-  icon + text, or bar + icon.
-- **Open‑Meteo weather over HTTPS, no API key**, sized per screen.
-- **100 % offline configuration** — no server, no CDN, no external host.
-- **Built for 2026 hardware** (Pebble Time 2, Pebble 2 Duo) on the current SDK,
-  with a local test gate that mirrors the cloud's strict build flags.
+All complications are available in every slot (status bar, above time left/right):
 
-## 🧩 What it shows
+| Category | Complications |
+|----------|--------------|
+| **Health** | 👟 Steps, ❤️ Heart rate (BPM), 📏 Distance, 🔥 Calories, 😴 Sleep |
+| **Weather** | 🌡️ Temperature, 🌅 Sunrise, 🌇 Sunset, 🌙 Moon phase, 📍 Location |
+| **System** | 🔋 Watch/Phone battery, 📶 Bluetooth, 📅 Date, 🕐 Timezone, 2nd time zone |
+| **Date** | Day, Month, Week number, Day of year, Days left, Seconds, AM/PM |
 
-- **Complications** (shared menu): date, day, month, week number,
-  day‑of‑year / days‑left, seconds, AM/PM, timezone, a second time zone,
-  sunrise, sunset, moon phase, weather location, watch/phone battery, Bluetooth.
-- **Weather:** condition icon + temperature (Open‑Meteo).
-- **Calendar:** previous / current / next week, today accented on colour
-  watches.
-- Vibration (hourly, on disconnect / reconnect), Do‑Not‑Disturb, themes and
-  full localization — all from the config screen.
+### Date formats:
+- D MMMM (localized, e.g. "22 Juillet")
+- MMMM DD, YYYY / Mmm DD, YYYY / D MMMM YYYY / and more
 
-## ⌚ Platforms
+## ⌚ Platform
 
-| Platform  | Watch                      | Screen          | Status |
-| --------- | -------------------------- | --------------- | ------ |
-| `emery`   | Pebble Time 2              | colour 200×228  | ✅ Supported |
-| `flint`   | Pebble 2 Duo / Core 2 Duo  | B&W 144×168     | ✅ Supported |
-| `basalt`  | Pebble Time / Time Steel   | colour 144×168  | ✅ Supported |
-| `diorite` | Pebble 2                   | B&W 144×168     | ✅ Supported |
-| `aplite`  | Pebble (2013) / Steel      | B&W 144×168     | ⏳ Dropped — future (24 KB RAM, needs a code diet) |
-| `chalk`   | Pebble Time Round          | colour 180×180 round | 🔜 Not supported — future (round layout) |
-| `gabbro`  | Core Time 2                | colour 260×260 round | 🔜 Not supported — future (round layout) |
+| Platform | Watch | Screen | Status |
+|----------|-------|--------|--------|
+| `emery` | Pebble Time 2 | colour 200×228 | ✅ Supported (only) |
 
-The round platforms (`chalk` / `gabbro`) need a dedicated round layout — the
-current design is rectangle‑centric. `aplite` was dropped for RAM. See
-[`TODO.md`](TODO.md).
-
-## 🔨 Building (Nix + official Pebble CLI)
+## 🔨 Building
 
 ```sh
-nix develop                      # pebble CLI + ARM toolchain + emulator
-pebble build                     # -> build/TimelyNG.pbw
-pebble install --emulator emery  # colour emulator (or basalt / diorite / flint)
-```
-
-Build/test exactly as the cloud does (catches the `-Werror` / warnings the
-local build relaxes via `pbl_suppress_newer_gcc_warnings`):
-
-```sh
-nix develop -c sh tools/test.sh  # host unit tests + build + strict per‑platform compile
+# Requires Pebble SDK (pip install pebble-tool)
+pebble build                     # -> build/timely-vibe.pbw
+pebble install --emulator emery  # test on emulator
 ```
 
 ## ⚙️ Configuration
 
-The settings screen is fully offline. On `showConfiguration` the watch's
-PebbleKit JS builds the page from `src/js/config.js` (the field spec) via
-`src/js/configpage.js` and hands it to the phone as a `data:text/html` URI; the
-page returns the chosen values via `pebblejs://close#`. Edit
-`src/js/config.js` to change the options.
+Settings are configured offline via PebbleKit JS. The config page is built from `src/js/config.js` and works on both Android and iOS.
 
-## 📦 Publishing
+## 🙏 Credits
 
-Store listing copy (description, release notes, categories, asset specs) lives
-in [`PUBLISHING.md`](PUBLISHING.md), ready to paste into the
-[Rebble developer portal](https://dev-portal.rebble.io/).
+Based on [TimelyNG](https://github.com/eldios/TimelyNG) by [eldios](https://github.com/eldios), which is itself inspired by the original [Timely](https://github.com/Andrew129260/Timely-2) / [PebbleTimely](https://github.com/alan-johnson/PebbleTimely) watchfaces.
+
+## 📦 Store
+
+- **Rebble Store:** [Timely-Vibe](https://apps.repebble.com/f62530e9f97649b093a50e9e)
+- **Developer:** [slopvibe.org](https://github.com/SlopVibe-org)
+- **Source:** This repository
+
+---
+
+<div align="center">
+Made with ⌚ by slopvibe.org
+</div>
