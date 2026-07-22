@@ -1,11 +1,3 @@
-# Ignore build generated files
-build
-.lock-waf*
-pebble-screenshot*
-.*.swp
-.direnv
-
-# Local-only workflow artifacts (brainstorming specs / plans)
-docs/superpowers/
-
-node_modules/
+pebble_screenshot_*.png
+build/
+.waf-*

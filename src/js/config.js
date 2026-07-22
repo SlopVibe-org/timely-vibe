@@ -106,8 +106,6 @@ module.exports = [
       { key: 'slot_stat_r', label: 'Status bar — right', type: 'select', def: 15, options: SLOTS },
       { key: 'slot_ctr_l', label: 'Above time — left', type: 'select', def: 0, options: SLOTS },
       { key: 'slot_ctr_r', label: 'Above time — right', type: 'select', def: 0, options: SLOTS },
-      { key: 'style_week', label: 'Above calendar — left', type: 'select', def: 0, options: SLOTS },
-      { key: 'style_am_pm', label: 'Above calendar — right', type: 'select', def: 0, options: SLOTS },
       { key: 'batt_style', label: 'Battery style', type: 'select', def: 1,
         options: [['Bar (fills) with %', 0], ['Text %', 1], ['Icon + %', 2], ['Bar + icon', 3]],
         note: 'How the Watch/Phone battery complications are drawn.' },

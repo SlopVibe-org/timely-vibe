@@ -36,19 +36,25 @@ static void weather_render(Layer *me, GContext *ctx) {
   // wide screens), without spilling into the calendar below.
   bool compact = (s_glyph_size == 28);
   GFont temp_font = fonts_get_system_font(compact ? FONT_KEY_GOTHIC_18 : FONT_KEY_GOTHIC_28);
-  int icon_w = compact ? 34 : (s_glyph_size == 48 ? 50 : 42); // climacons box
-  int gap    = compact ? 18 : (s_glyph_size == 48 ? 36 : 32); // temp baseline below icon top
+  int icon_w = compact ? 34 : (s_glyph_size == 48 ? 50 : 42); // climacons box width
+  int icon_h = compact ? 28 : (s_glyph_size == 48 ? 48 : 40); // icon visual height
+  int temp_w = compact ? 40 : 60; // temperature text box width
   int temp_h = compact ? 18 : 28;
   int band_h = layer_get_bounds(me).size.h;
-  int block  = gap + temp_h;           // total visual height of icon+temp
-  int top = (band_h - block) / 2;
-  if (top < 0) { top = 0; }
-  // Tint the condition glyph (color platforms, non-Mono theme); the temperature
-  // stays the theme color, so restore it afterwards.
+  int band_w = layer_get_bounds(me).size.w;
+  // Side-by-side: icon on left, temperature to its right, both vertically centred
+  int total_w = icon_w + temp_w;
+  int start_x = (band_w - total_w) / 2;
+  if (start_x < 0) { start_x = 0; }
+  int icon_top = (band_h - icon_h) / 2;
+  if (icon_top < 0) { icon_top = 0; }
+  int temp_top = (band_h - temp_h) / 2;
+  if (temp_top < 0) { temp_top = 0; }
+  // Tint the condition glyph; temperature stays theme color
   graphics_context_set_text_color(ctx, weather_glyph_color(cond_current[0]));
-  graphics_draw_text(ctx, cond_current, climacons, GRect(2, top, icon_w, gap + 8), GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
+  graphics_draw_text(ctx, cond_current, climacons, GRect(start_x, icon_top, icon_w, icon_h + 8), GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
   graphics_context_set_text_color(ctx, theme_palette().fg);
-  graphics_draw_text(ctx, temp_current, temp_font, GRect(2, top + gap, icon_w + 2, temp_h + 8), GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
+  graphics_draw_text(ctx, temp_current, temp_font, GRect(start_x + icon_w, temp_top, temp_w, temp_h + 8), GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
   if (debug_get()->general) { app_log(APP_LOG_LEVEL_DEBUG, __FILE__, __LINE__, "Weather redrawing: %d, %s", weather_state()->current, weather_state()->condition); }
 }
 

@@ -255,7 +255,7 @@ static int CAL_HEIGHT = 18; // calendar row height   (recomputed at runtime)
 static void compute_layout(int w, int h) {
   int has_top    = adv_settings_get()->showStatus != 0;
   int has_center = settings_get()->slot_ctr_l || settings_get()->slot_ctr_r;
-  int has_bottom = settings_get()->show_week  || settings_get()->show_am_pm;
+  int has_bottom = 0; // disabled — time sits directly above calendar
   TimelyLayout L = layout_compute_rows(w, h, has_top, has_center, has_bottom);
   DEVICE_WIDTH = w; DEVICE_HEIGHT = h;
   LAYOUT_STAT = L.statusbar.y;
@@ -713,10 +713,13 @@ static void layout_two_slots(TextLayer *l, TextLayer *r, uint8_t cl, uint8_t cr,
 
 void apply_center(void) {
   if (!date_layer || !ctr_r_layer) { return; } // not built yet
-  int voff = (strcmp(lang_gen_get()->language, "RU") == 0)
-             ? (showing_statusbar ? -4 : 0) : (showing_statusbar ? -9 : -5);
+  // Position the center slots in the weather band (above the time layer)
+  // so they sit on the same line as the temperature.
+  int band_h = LAYOUT_SLOT_HEIGHT - 96; // time_y = slot_height - font_h
+  if (band_h < 20) { band_h = 20; }
+  int voff = (strcmp(lang_gen_get()->language, "RU") == 0) ? -2 : 0;
   layout_two_slots(date_layer, ctr_r_layer, settings_get()->slot_ctr_l, settings_get()->slot_ctr_r,
-                   REL_CLOCK_DATE_TOP + voff, REL_CLOCK_DATE_HEIGHT);
+                   voff, band_h);
 }
 
 void apply_bottom(void) {
@@ -945,7 +948,11 @@ void position_time_layer() {
   int time_y = LAYOUT_SLOT_HEIGHT - font_h;
   if (time_y < 0) { time_y = 0; }
   layer_set_frame( text_layer_get_layer(time_layer), GRect(0, time_y, DEVICE_WIDTH, font_h) );
-  weather_set_frame( GRect(0, time_y, DEVICE_WIDTH, font_h) );
+  // Weather sits above the time — use all available vertical space
+  // so both icon AND temperature are fully visible.
+  int weather_h = time_y; // everything above the time layer
+  if (weather_h < 20) { weather_h = 20; } // minimum
+  weather_set_frame( GRect(0, 0, DEVICE_WIDTH, weather_h) );
   refresh_status_tray();
 }
 

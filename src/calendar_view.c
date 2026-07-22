@@ -96,7 +96,8 @@ static void calendar_render(Layer *me, GContext* ctx) {
       for (int col = 0; col < CAL_DAYS; col++) {
         if ( row == specialRow && col == specialDay) {
           if (settings_get()->day_invert) {
-            setTodayColors(ctx);
+            setTodayColors(ctx); // keep accent background
+            graphics_context_set_text_color(ctx, GColorBlack); // but force black text for contrast
           }
           current = bold;
           font_vert_offset = -3;

@@ -22,7 +22,7 @@ TimelyLayout layout_compute_rows(int width, int height, int has_top, int has_cen
   // Space left for the time/weather band + the calendar after the fixed rows.
   int avail = height - stat_h - center_h - bottom_h;
   // Calendar is compact (1 week only). Give maximum space to time.
-  int cal_h  = 50; // fixed: header + 1 data row
+  int cal_h  = 40; // fixed: header + 1 data row (tighter)
   int time_h = avail - cal_h; // time gets everything else
 
   int slot_top_h = center_h + time_h + bottom_h;
@@ -68,9 +68,9 @@ ClockFont clock_font_for(int width, int band_h) {
 }
 
 int weather_glyph_size_for(int width, int band_h) {
-  if (width < 180) { return 28; }
-  if (band_h >= 64) { return 48; }
-  return 40;
+  // Always use 48 — weather has its own band now
+  if (width >= 180) { return 48; }
+  return 28;
 }
 
 int chrg_icon_x_for(int width, int right_slot_is_bar) {
